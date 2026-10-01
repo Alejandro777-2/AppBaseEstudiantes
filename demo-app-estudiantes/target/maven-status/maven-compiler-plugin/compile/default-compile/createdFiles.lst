@@ -1,0 +1,6 @@
+com\udla\arquitectura\demo\DemoApplication.class
+com\udla\arquitectura\demo\model\Producto.class
+com\udla\arquitectura\demo\repository\RepositorioProductoEnMemoria.class
+com\udla\arquitectura\demo\repository\ProductoRepository.class
+com\udla\arquitectura\demo\service\ProductoService.class
+com\udla\arquitectura\demo\controller\ProductoController.class
