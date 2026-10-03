@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo & Benchmark Cache Proxy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Header con el Botón Principal -->
+        <header class="flex flex-col md:flex-row justify-between items-center bg-slate-800 border border-slate-700 p-6 rounded-2xl shadow-xl mb-8">
+            <div>
+                <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+                    Demo Patrón Proxy & Caché
+                </h1>
+                <p class="text-slate-400 text-sm mt-1">Monitoreo de tiempo de respuesta y optimización de rendimiento</p>
+            </div>
+            <button onclick="cargarProductos()" class="mt-4 md:mt-0 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition duration-200 flex items-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-rotate"></i> Consultar Catálogo
+            </button>
+        </header>
+
+        <!-- Mensaje de bienvenida inicial (se oculta al hacer clic) -->
+        <div id="mensajeInicial" class="text-center py-16 bg-slate-800/50 border border-slate-700/50 rounded-2xl">
+            <div class="p-4 bg-blue-500/10 text-blue-400 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fa-solid fa-hand-pointer"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-200">El catálogo está listo</h3>
+            <p class="text-slate-400 text-sm mt-1">Haz clic en el botón <strong class="text-blue-400">"Consultar Catálogo"</strong> para cargar los datos y medir el tiempo del Proxy.</p>
+        </div>
+
+        <!-- Indicadores KPI (Ocultos inicialmente con la clase 'hidden') -->
+        <div id="seccionKpi" class="hidden grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl flex items-center gap-4">
+                <div class="p-4 bg-cyan-500/10 text-cyan-400 rounded-xl text-2xl">
+                    <i class="fa-solid fa-stopwatch"></i>
+                </div>
+                <div>
+                    <p class="text-xs uppercase text-slate-400 font-semibold">Tiempo de Respuesta</p>
+                    <p id="tiempoRespuesta" class="text-2xl font-bold text-white">-- ms</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl flex items-center gap-4">
+                <div id="iconFuente" class="p-4 bg-slate-700 text-slate-400 rounded-xl text-2xl">
+                    <i class="fa-solid fa-server"></i>
+                </div>
+                <div>
+                    <p class="text-xs uppercase text-slate-400 font-semibold">Origen de Datos</p>
+                    <p id="origenDatos" class="text-lg font-bold text-slate-300">Cargando...</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl flex items-center gap-4">
+                <div class="p-4 bg-purple-500/10 text-purple-400 rounded-xl text-2xl">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+                <div>
+                    <p class="text-xs uppercase text-slate-400 font-semibold">Total de Ítems</p>
+                    <p id="totalProductos" class="text-2xl font-bold text-white">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla del Catálogo (Oculta inicialmente con la clase 'hidden') -->
+        <div id="seccionTabla" class="hidden bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden shadow-xl">
+            <div class="px-6 py-4 border-b border-slate-700 flex justify-between items-center">
+                <h2 class="text-lg font-bold text-slate-200">Productos del Catálogo</h2>
+                <span id="badgeEstado" class="px-3 py-1 text-xs font-semibold rounded-full bg-slate-700 text-slate-400">Cargando...</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-900/50 text-slate-400 text-xs uppercase tracking-wider">
+                        <tr>
+                            <th class="py-3 px-6">ID</th>
+                            <th class="py-3 px-6">Nombre</th>
+                            <th class="py-3 px-6">Categoría</th>
+                            <th class="py-3 px-6 text-right">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaCuerpo" class="divide-y divide-slate-700/50 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function cargarProductos() {
+            try {
+                const res = await fetch('/api/productos');
+                const data = await res.json();
+                
+                // Mostrar las secciones ocultas y esconder el mensaje inicial
+                document.getElementById('mensajeInicial').classList.add('hidden');
+                document.getElementById('seccionKpi').classList.remove('hidden');
+                document.getElementById('seccionTabla').classList.remove('hidden');
+
+                document.getElementById('tiempoRespuesta').innerText = `${data.tiempoMs} ms`;
+                document.getElementById('totalProductos').innerText = data.productos.length;
+
+                const origen = document.getElementById('origenDatos');
+                const iconFuente = document.getElementById('iconFuente');
+                const badge = document.getElementById('badgeEstado');
+
+                if (data.usosCache) {
+                    origen.innerText = "Caché (Proxy)";
+                    origen.className = "text-lg font-bold text-emerald-400";
+                    iconFuente.className = "p-4 bg-emerald-500/10 text-emerald-400 rounded-xl text-2xl";
+                    badge.innerText = "Respuesta Rápida (Caché)";
+                    badge.className = "px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                } else {
+                    origen.innerText = "Servicio Real / BD";
+                    origen.className = "text-lg font-bold text-amber-400";
+                    iconFuente.className = "p-4 bg-amber-500/10 text-amber-400 rounded-xl text-2xl";
+                    badge.innerText = "Consulta Completa (Servicio Real)";
+                    badge.className = "px-3 py-1 text-xs font-semibold rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30";
+                }
+
+                document.getElementById('tablaCuerpo').innerHTML = data.productos.map(p => `
+                    <tr class="hover:bg-slate-700/30 transition">
+                        <td class="py-4 px-6 font-mono text-cyan-400">#${p.id}</td>
+                        <td class="py-4 px-6 font-semibold text-slate-100">${p.nombre}</td>
+                        <td class="py-4 px-6"><span class="bg-slate-700 text-slate-300 text-xs px-2.5 py-1 rounded-md">${p.categoria}</span></td>
+                        <td class="py-4 px-6 text-right font-mono font-bold text-emerald-400">$${p.precio.toFixed(2)}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error("Error al cargar productos:", err);
+            }
+        }
+    </script>
+</body>
+</html>
