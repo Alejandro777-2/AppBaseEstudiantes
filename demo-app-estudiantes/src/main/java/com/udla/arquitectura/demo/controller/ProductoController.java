@@ -23,19 +23,9 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
-    // Endpoint: GET /api/productos
     @GetMapping
-    @Cacheable("productosCache") // Guarda la lista completa en caché
     public List<Producto> listar() {
         System.out.println("--> Obteniendo lista completa de productos desde el servicio...");
         return productoService.listarTodos();
-    }
-
-    // Endpoint: GET /api/productos/{id}
-    @GetMapping("/{id}")
-    @Cacheable(value = "productoCache", key = "#id") // Guarda el producto por su ID
-    public Producto buscar(@PathVariable Long id) {
-        System.out.println("--> Buscando producto por ID " + id + " desde el servicio...");
-        return productoService.buscarPorId(id);
     }
 }

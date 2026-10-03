@@ -1,6 +1,8 @@
-C:\Users\laboratorio\Downloads\ISWZ2202_App_Base_ESTUDIANTES\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\controller\ProductoController.java
-C:\Users\laboratorio\Downloads\ISWZ2202_App_Base_ESTUDIANTES\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\DemoApplication.java
-C:\Users\laboratorio\Downloads\ISWZ2202_App_Base_ESTUDIANTES\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\model\Producto.java
-C:\Users\laboratorio\Downloads\ISWZ2202_App_Base_ESTUDIANTES\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\repository\ProductoRepository.java
-C:\Users\laboratorio\Downloads\ISWZ2202_App_Base_ESTUDIANTES\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\repository\RepositorioProductoEnMemoria.java
-C:\Users\laboratorio\Downloads\ISWZ2202_App_Base_ESTUDIANTES\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\service\ProductoService.java
+D:\ibujes\AppBaseEstudiantes\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\controller\ProductoController.java
+D:\ibujes\AppBaseEstudiantes\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\DemoApplication.java
+D:\ibujes\AppBaseEstudiantes\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\model\Producto.java
+D:\ibujes\AppBaseEstudiantes\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\repository\ProductoRepository.java
+D:\ibujes\AppBaseEstudiantes\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\repository\RepositorioProductoEnMemoria.java
+D:\ibujes\AppBaseEstudiantes\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\service\ProductoService.java
+D:\ibujes\AppBaseEstudiantes\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\service\ProductoServiceImpl.java
+D:\ibujes\AppBaseEstudiantes\demo-app-estudiantes\src\main\java\com\udla\arquitectura\demo\service\ProductoServiceProxy.java

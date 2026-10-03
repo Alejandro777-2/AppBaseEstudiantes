@@ -7,17 +7,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Proxy: Intercepta las llamadas para gestionar la caché local.
- */
 @Service
-@Primary // Hace que Spring inyecte el Proxy por defecto en el Controller
+@Primary
 public class ProductoServiceProxy implements ProductoService {
 
     private final ProductoService productoServiceReal;
     
-    // Almacenamiento local del Proxy (Caché)
-    private List<Producto> cacheProductos = null;
+    // Agrega 'static' para asegurar que la caché se mantenga en memoria entre peticiones HTTP
+    private static List<Producto> cacheProductos = null;
 
     public ProductoServiceProxy(@Qualifier("productoServiceReal") ProductoService productoServiceReal) {
         this.productoServiceReal = productoServiceReal;
@@ -36,7 +33,6 @@ public class ProductoServiceProxy implements ProductoService {
 
     @Override
     public Producto buscarPorId(Long id) {
-        // En este ejemplo pasa directo al servicio real (o puedes implementar caché por ID)
         return productoServiceReal.buscarPorId(id);
     }
 }
